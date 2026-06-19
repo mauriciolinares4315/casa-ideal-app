@@ -1,8 +1,7 @@
 import '../models/product.dart';
 
 const List<Product> kProducts = [
- Product(
-    
+  Product(
     id: '1',
     name: 'Sofá Modular Tela Beige 3 Cuerpos',
     description:
@@ -14,8 +13,8 @@ const List<Product> kProducts = [
     rating: 4.9,
     reviewCount: 312,
     isFeatured: true,
-      ,
-  (
+  ),
+  Product(
     id: '2',
     name: 'Mesa de Centro Madera Maciza Roble',
     description:
@@ -28,7 +27,7 @@ const List<Product> kProducts = [
     reviewCount: 189,
     isFeatured: true,
   ),
-(
+  Product(
     id: '3',
     name: 'Lámpara de Pie Arco Minimalista',
     description:
@@ -41,7 +40,7 @@ const List<Product> kProducts = [
     reviewCount: 94,
     isFeatured: true,
   ),
-  (
+  Product(
     id: '4',
     name: 'Cama Queen Cabecera Tapizada en Lino',
     description:
@@ -54,7 +53,7 @@ const List<Product> kProducts = [
     reviewCount: 256,
     isFeatured: true,
   ),
-  (
+  Product(
     id: '5',
     name: 'Armario Ropero 4 Puertas Corredizas',
     description:
@@ -67,7 +66,7 @@ const List<Product> kProducts = [
     reviewCount: 173,
     isFeatured: true,
   ),
-  (
+  Product(
     id: '6',
     name: 'Mesa Comedor Extensible 6 Puestos',
     description:
@@ -80,7 +79,7 @@ const List<Product> kProducts = [
     reviewCount: 145,
     isFeatured: true,
   ),
-  (
+  Product(
     id: '7',
     name: 'Silla de Comedor Nórdica (Pack x 2)',
     description:
@@ -93,7 +92,7 @@ const List<Product> kProducts = [
     reviewCount: 208,
     isFeatured: true,
   ),
-  (
+  Product(
     id: '8',
     name: 'Escritorio Ejecutivo con Cajonera',
     description:
@@ -105,7 +104,7 @@ const List<Product> kProducts = [
     reviewCount: 87,
     isFeatured: true,
   ),
-  (
+  Product(
     id: '9',
     name: 'Estante Flotante Orgánico (Set 3 piezas)',
     description:
@@ -118,7 +117,7 @@ const List<Product> kProducts = [
     reviewCount: 367,
     isFeatured: true,
   ),
-  (
+  Product(
     id: '10',
     name: 'Espejo de Cuerpo Entero Marco Madera',
     description:
@@ -131,7 +130,7 @@ const List<Product> kProducts = [
     reviewCount: 214,
     isFeatured: true,
   ),
-  (
+  Product(
     id: '11',
     name: 'Cojines Decorativos Textura Tejida (Pack x 4)',
     description:
@@ -144,7 +143,6 @@ const List<Product> kProducts = [
     reviewCount: 431,
     isFeatured: true,
   ),
-  )
 ];
 
 // Categorías únicas de tus productos

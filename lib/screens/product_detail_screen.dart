@@ -168,7 +168,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           context,
                           listen: false,
                         );
-                        cartProvider.addItem(product, _quantity);
+                        cartProvider.addProduct(product,);
 
                         // Mostrar feedback
                         ScaffoldMessenger.of(context).showSnackBar(
