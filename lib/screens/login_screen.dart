@@ -1,5 +1,6 @@
+import 'package:casa_ideal_app/config/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; // Si usas go_router. Si no, cambia la navegación.
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -89,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Icon(
                     Icons.home_work_outlined,
                     size: 80,
-                    color: Color(0xFF795548),
+                    color: AppTheme.primaryColor,
                   ),
                   const SizedBox(height: 16),
                   const Text(
@@ -98,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF795548),
+                      color: AppTheme.primaryColor,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -167,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     onPressed: _isLoading ? null : _onLogin,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF795548),
+                      backgroundColor: AppTheme.primaryColor,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       textStyle: const TextStyle(fontSize: 18),
@@ -192,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {},
                     child: const Text(
                       '¿Olvidaste tu contraseña?',
-                      style: TextStyle(color: Color(0xFF795548)),
+                      style: TextStyle(color: AppTheme.primaryColor),
                     ),
                   ),
                 ],

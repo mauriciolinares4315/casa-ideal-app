@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
+import '../config/theme.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -17,35 +18,37 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Imagen
-            ClipRRect(
-              //////envolver con el Hero en la home para transición suave
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(12),
-              ),
-              child: Image.network(
-                product.imageUrl,
-                height: 140,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Container(
-                    height: 140,
-                    color: Colors.grey[300],
-                    child: const Center(child: CircularProgressIndicator()),
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    height: 140,
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.broken_image, size: 40),
-                  );
-                },
+            // ⭐ IMAGEN CON HERO (NUEVO)
+            Hero(
+              tag: 'product-${product.id}',  // Tag único basado en el ID
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
+                child: Image.network(
+                  product.imageUrl,
+                  height: 140,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      height: 140,
+                      color: Colors.grey[300],
+                      child: const Center(child: CircularProgressIndicator()),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      height: 140,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.broken_image, size: 40),
+                    );
+                  },
+                ),
               ),
             ),
-            // Contenido
+            // Contenido (sin cambios)
             Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
@@ -66,7 +69,7 @@ class ProductCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF795548),
+                      color: AppTheme.primaryColor,
                     ),
                   ),
                   const SizedBox(height: 4),

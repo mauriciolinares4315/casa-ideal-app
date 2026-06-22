@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../models/product.dart';
 import '../models/cart_item.dart';
+import '../config/theme.dart';
+
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -57,7 +59,7 @@ class CartScreen extends StatelessWidget {
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       title: const Text('Mi Carrito'),
-      backgroundColor: const Color(0xFF795548),
+      backgroundColor: AppTheme.primaryColor,
       foregroundColor: Colors.white,
       elevation: 0,
       actions: [
@@ -100,7 +102,7 @@ class CartScreen extends StatelessWidget {
           ElevatedButton(
             onPressed: () => context.go('/home'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF795548),
+              backgroundColor: AppTheme.primaryColor,
               foregroundColor: Colors.white,
             ),
             child: const Text('Ir a la tienda'),
@@ -209,7 +211,7 @@ class CartScreen extends StatelessWidget {
           ElevatedButton(
             onPressed: () => _onCheckout(context, cart, total),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF795548),
+              backgroundColor: AppTheme.primaryColor,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
@@ -243,7 +245,7 @@ class CartScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: isTotal ? 20 : 16,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-            color: isTotal ? const Color(0xFF795548) : null,
+            color: isTotal ? AppTheme.primaryColor : null,
           ),
         ),
       ],
@@ -278,7 +280,7 @@ class CartScreen extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF795548),
+              backgroundColor: AppTheme.primaryColor,
               foregroundColor: Colors.white,
             ),
             child: const Text('Confirmar'),
@@ -386,7 +388,7 @@ class CartItemTile extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
-                color: Color(0xFF795548),
+                color: AppTheme.primaryColor,
               ),
             ),
           ],

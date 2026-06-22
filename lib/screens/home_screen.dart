@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/product_card.dart';
+import '../widgets/banner_carousel.dart';
 import '../data/products_data.dart';
 import '../models/product.dart';
+import '../config/theme.dart';
+  
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,12 +15,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Estado de búsqueda y filtro
+  // Estado de búsqueda y filtr
   String _searchQuery = '';
   String _selectedCategory = 'Todos';
 
   // Contador del carrito (demo)
-  int _cartCount = 0; // En una app real, vendría de un provider
+  final _cartCount = 0; // En una app real, vendría de un provider
 
   // Getter que filtra productos por búsqueda y categoría
   List<Product> get _filteredProducts {
@@ -40,10 +43,15 @@ class _HomeScreenState extends State<HomeScreen> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       title: const Text('casaIdeal'),
-      backgroundColor: const Color(0xFF795548),
+      backgroundColor:AppTheme.primaryColor,
       foregroundColor: Colors.white,
       elevation: 0,
       actions: [
+        // Ícono de perfil (nuevo)
+      IconButton(
+        icon: const Icon(Icons.person_outline),
+        onPressed: () => context.go('/profile'),
+      ),
         // Icono del carrito con badge
         Stack(
           children: [
@@ -73,35 +81,43 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+
   // ----------------------- BODY PRINCIPAL -----------------------
-  Widget _buildBody() {
-    return SingleChildScrollView(
+Widget _buildBody() {
+  return RefreshIndicator(
+    onRefresh: () async {
+      await Future.delayed(const Duration(seconds: 1));
+      setState(() {
+        _searchQuery = '';
+        _selectedCategory = 'Todos';
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Productos actualizados'),
+            duration: Duration(seconds: 1),
+          ),
+        );
+      }
+    },
+    child: SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(), // Obligatorio para RefreshIndicator
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 1. Campo de búsqueda
           _buildSearchField(),
-
           const SizedBox(height: 16),
-
-          // 2. Banner destacado (PageView)
           _buildBannerCarousel(),
-
           const SizedBox(height: 16),
-
-          // 3. Filtros de categoría (Chips)
           _buildCategoryFilter(),
-
           const SizedBox(height: 16),
-
-          // 4. Grid de productos
           _buildProductGrid(),
         ],
       ),
-    );
-  }
-
+    ),
+  );
+}
   // ----------------------- CAMPO DE BÚSQUEDA -----------------------
   Widget _buildSearchField() {
     return TextField(
@@ -122,31 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // ----------------------- BANNER CON PAGEVIEW -----------------------
   Widget _buildBannerCarousel() {
-    // Lista de imágenes de banner (puedes poner URLs reales)
-    final List<String> bannerImages = [
-      'https://picsum.photos/seed/banner1/800/300',
-      'https://picsum.photos/seed/banner2/800/300',
-      'https://picsum.photos/seed/banner3/800/300',
-    ];
-
-    return SizedBox(
-      height: 150,
-      child: PageView.builder(
-        itemCount: bannerImages.length,
-        itemBuilder: (context, index) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              bannerImages[index],
-              fit: BoxFit.cover,
-              width: double.infinity,
-            ),
-          );
-        },
-      ),
-    );
-  }
-
+  return const BannerCarousel(); // ← Usa el widget reutilizable
+}
   // ----------------------- FILTROS (CHIPS) -----------------------
   Widget _buildCategoryFilter() {
     return SizedBox(
@@ -167,16 +160,16 @@ class _HomeScreenState extends State<HomeScreen> {
               });
             },
             backgroundColor: Colors.grey[200],
-            selectedColor: const Color(0xFF795548).withOpacity(0.2),
+            selectedColor:AppTheme.primaryColor.withOpacity(0.2),
             labelStyle: TextStyle(
-              color: isSelected ? const Color(0xFF795548) : Colors.black87,
+              color: isSelected ? AppTheme.primaryColor : Colors.black87,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
               side: BorderSide(
                 color: isSelected
-                    ? const Color(0xFF795548)
+                    ? AppTheme.primaryColor
                     : Colors.transparent,
               ),
             ),
@@ -189,13 +182,28 @@ class _HomeScreenState extends State<HomeScreen> {
   // ----------------------- GRID DE PRODUCTOS -----------------------
   Widget _buildProductGrid() {
     if (_filteredProducts.isEmpty) {
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.all(40),
-          child: Text('No se encontraron productos'),
-        ),
-      );
-    }
+  return const Center(
+    child: Padding(
+      padding: EdgeInsets.all(40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.search_off, size: 60, color: Colors.grey),
+          SizedBox(height: 12),
+          Text(
+            'Sin resultados para tu búsqueda',
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Prueba con otras palabras',
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ),
+        ],
+      ),
+    ),
+  );
+}
 
     return GridView.builder(
       shrinkWrap: true,

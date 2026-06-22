@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import '../providers/cart_provider.dart'; // Asumiendo que usas ChangeNotifier
-import 'package:provider/provider.dart'; // Si usas Provider
+import '../providers/cart_provider.dart';
+import 'package:provider/provider.dart';
+import '../config/theme.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -22,7 +23,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(product.name),
-        backgroundColor: const Color(0xFF795548),
+        backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
         elevation: 0,
       ),
@@ -35,12 +36,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               children: [
                 // Hero para transición suave desde la Home
                 Hero(
-                  tag: 'product_${product.id}',
+                  tag: 'product-${product.id}',
                   child: Image.network(
                     product.imageUrl,
                     height: 300,
                     width: double.infinity,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 300,
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.broken_image, size: 60),
+                      );
+                    },
                   ),
                 ),
                 // Badge de "Nuevo" o "Oferta" usando Positioned
@@ -79,8 +87,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   // Categoría
                   Chip(
                     label: Text(product.category),
-                    backgroundColor: const Color(0xFF795548).withOpacity(0.1),
-                    labelStyle: const TextStyle(color: Color(0xFF795548)),
+                    backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
+                    labelStyle: TextStyle(color: AppTheme.primaryColor),
                   ),
                   const SizedBox(height: 12),
 
@@ -90,7 +98,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF795548),
+                      color: AppTheme.primaryColor,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -138,7 +146,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ? () => setState(() => _quantity--)
                             : null,
                         icon: const Icon(Icons.remove_circle_outline),
-                        color: const Color(0xFF795548),
+                        color: AppTheme.primaryColor,
                         iconSize: 32,
                       ),
                       Text(
@@ -151,7 +159,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       IconButton(
                         onPressed: () => setState(() => _quantity++),
                         icon: const Icon(Icons.add_circle_outline),
-                        color: const Color(0xFF795548),
+                        color: AppTheme.primaryColor,
                         iconSize: 32,
                       ),
                     ],
@@ -180,7 +188,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF795548),
+                        backgroundColor: AppTheme.primaryColor,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         textStyle: const TextStyle(fontSize: 18),
@@ -216,7 +224,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   // Widget auxiliar para los chips de información
   Widget _buildInfoChip(IconData icon, String label) {
     return Chip(
-      avatar: Icon(icon, size: 16, color: const Color(0xFF795548)),
+      avatar: Icon(icon, size: 16, color: AppTheme.primaryColor),
       label: Text(label, style: const TextStyle(fontSize: 12)),
       backgroundColor: Colors.grey[100],
       padding: const EdgeInsets.symmetric(horizontal: 4),
