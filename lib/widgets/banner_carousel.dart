@@ -22,6 +22,25 @@ class _BannerCarouselState extends State<BannerCarousel> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // Auto-play cada 4 segundos
+    Future.doWhile(() async {
+      await Future.delayed(const Duration(seconds: 4));
+      if (!mounted) return false;
+      if (_controller.hasClients) {
+        final next = (_current + 1) % _banners.length;
+        _controller.animateToPage(
+          next,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+      return true;
+    });
+  }
+
+  @override
   void dispose() {
     // Liberar el controlador para evitar fugas de memoria
     _controller.dispose();
