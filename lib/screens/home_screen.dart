@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // ----------------------- APP BAR -----------------------
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: const Text('casaIdeal'),
+      title: const Text('Casa Ideal'),
       backgroundColor:AppTheme.primaryColor,
       foregroundColor: Colors.white,
       elevation: 0,

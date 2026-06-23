@@ -20,7 +20,7 @@ class ProductCard extends StatelessWidget {
           children: [
             // ⭐ IMAGEN CON HERO (NUEVO)
             Hero(
-              tag: 'product-${product.id}',  // Tag único basado en el ID
+              tag: 'product-${product.id}', // Tag único basado en el ID
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(12),
@@ -29,7 +29,8 @@ class ProductCard extends StatelessWidget {
                   product.imageUrl,
                   height: 140,
                   width: double.infinity,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fitWidth, // ✅ Muestra imagen completa en ancho
+                  alignment: Alignment.topCenter, // ✅ Muestra la parte superior
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
                     return Container(

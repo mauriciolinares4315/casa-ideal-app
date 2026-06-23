@@ -7,6 +7,7 @@ class Product {
   final String category;
   final double rating;
   final int reviewCount;
+  final bool isFeatured;
 
   Product({
     required this.id,
@@ -16,7 +17,8 @@ class Product {
     required this.imageUrl,
     required this.category,
     required this.rating,
-    required this.reviewCount,
+    this.reviewCount = 0,
+    this.isFeatured = false,
   });
 
   // 👇 Convertir a JSON para guardar

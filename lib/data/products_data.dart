@@ -1,6 +1,6 @@
 import '../models/product.dart';
 
-const List<Product> kProducts = [
+final List<Product> kProducts = [
   Product(
     id: '1',
     name: 'Sofá Modular Tela Beige 3 Cuerpos',
@@ -8,7 +8,7 @@ const List<Product> kProducts = [
         'Elegante sofá modular tapizado en tela antimanchas color beige. Incluye 3 módulos independientes que puedes acomodar en L, recto o isla. Perfecto para salas modernas y acogedoras.',
     price: 2499000,
     imageUrl:
-        'https://media.adeo.com/mkp/3f7d218ebc0d7d6ad17fc11bad4bce95/media.jpg?width=3000&height=3000&format=jpg&quality=80&fit=bounds',
+        'https://images.pexels.com/photos/7160605/pexels-photo-7160605.jpeg',
     category: 'Sala',
     rating: 4.9,
     reviewCount: 312,

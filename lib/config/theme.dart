@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const Color primaryColor = Color(0xFF795548);
@@ -13,11 +14,20 @@ class AppTheme {
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
     scaffoldBackgroundColor: bgColor,
-    appBarTheme: const AppBarTheme(
+
+    textTheme: GoogleFonts.nunitoTextTheme(),
+
+    appBarTheme: AppBarTheme(
       backgroundColor: primaryColor,
       foregroundColor: Colors.white,
       elevation: 0,
       centerTitle: true,
+
+      titleTextStyle: GoogleFonts.nunito(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+      ),
     ),
     cardTheme: CardThemeData(
       color: cardColor,
@@ -30,6 +40,11 @@ class AppTheme {
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.symmetric(vertical: 16),
+
+        textStyle: GoogleFonts.nunito(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -40,6 +55,9 @@ class AppTheme {
       ),
       filled: true,
       fillColor: Colors.white,
+
+      labelStyle: GoogleFonts.nunito(),
+      hintStyle: GoogleFonts.nunito(color: Colors.grey[400]),
     ),
   );
 
@@ -52,11 +70,19 @@ class AppTheme {
       brightness: Brightness.dark,
     ),
     scaffoldBackgroundColor: const Color(0xFF121212),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF1E1E1E),
+
+    textTheme: GoogleFonts.nunitoTextTheme(ThemeData.dark().textTheme),
+
+    appBarTheme: AppBarTheme(
+      backgroundColor: const Color(0xFF1E1E1E),
       foregroundColor: Colors.white,
       elevation: 0,
       centerTitle: true,
+      titleTextStyle: GoogleFonts.nunito(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+      ),
     ),
     cardTheme: CardThemeData(
       color: const Color(0xFF2C2C2C),
@@ -69,6 +95,10 @@ class AppTheme {
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.symmetric(vertical: 16),
+        textStyle: GoogleFonts.nunito(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -79,6 +109,8 @@ class AppTheme {
       ),
       filled: true,
       fillColor: const Color(0xFF2C2C2C),
+      labelStyle: GoogleFonts.nunito(color: Colors.grey[400]),
+      hintStyle: GoogleFonts.nunito(color: Colors.grey[500]),
     ),
   );
 }

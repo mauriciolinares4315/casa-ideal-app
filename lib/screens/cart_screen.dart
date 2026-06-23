@@ -6,7 +6,6 @@ import '../models/product.dart';
 import '../models/cart_item.dart';
 import '../config/theme.dart';
 
-
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
@@ -16,29 +15,29 @@ class CartScreen extends StatelessWidget {
       appBar: _buildAppBar(context),
       body: Consumer<CartProvider>(
         builder: (context, cart, _) {
-          if (cart.itemCount == 0) {
+          
+          if (cart.items.isEmpty) {
             return _buildEmptyCart(context);
           }
           return Column(
             children: [
-              // Lista de items con Dismissible
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.all(16),
                   itemCount: cart.items.length,
                   itemBuilder: (context, index) {
-                    final cartItem = cart.items.values.elementAt(index);
+                    
+                    final cartItem = cart.items[index];
                     return Dismissible(
-                      key: Key(cartItem.product.id),
+                      
+                      key: Key(cartItem.product.id.toString()),
                       direction: DismissDirection.endToStart,
                       background: _buildDismissibleBackground(),
                       onDismissed: (_) {
-                        // Guardar datos antes de eliminar
                         final product = cartItem.product;
                         final quantity = cartItem.quantity;
-                        // Eliminar del carrito
-                        cart.removeProduct(product.id);
-                        // Mostrar SnackBar con deshacer
+                        
+                        cart.removeItem(product.id.toString());
                         _showUndoSnackBar(context, product, quantity, cart);
                       },
                       child: CartItemTile(cartItem: cartItem),
@@ -46,7 +45,6 @@ class CartScreen extends StatelessWidget {
                   },
                 ),
               ),
-              // Resumen y botón de compra
               _buildCheckoutSection(context, cart),
             ],
           );
@@ -63,12 +61,11 @@ class CartScreen extends StatelessWidget {
       foregroundColor: Colors.white,
       elevation: 0,
       actions: [
-        // Botón para vaciar carrito
         IconButton(
           icon: const Icon(Icons.delete_outline),
           onPressed: () {
             final cart = context.read<CartProvider>();
-            if (cart.itemCount > 0) {
+            if (cart.items.isNotEmpty) {
               _showClearCartDialog(context, cart);
             }
           },
@@ -135,8 +132,7 @@ class CartScreen extends StatelessWidget {
         action: SnackBarAction(
           label: 'Deshacer',
           onPressed: () {
-            // Reagregar el producto con la misma cantidad
-            cart.addProduct(product, quantity: quantity);
+            cart.addItem(product, quantity);
           },
         ),
       ),
@@ -178,12 +174,10 @@ class CartScreen extends StatelessWidget {
 
   // ---------- SECCIÓN DE RESUMEN Y CHECKOUT ----------
   Widget _buildCheckoutSection(BuildContext context, CartProvider cart) {
-    // Calcular subtotal (suma de precio * cantidad de cada item)
-    final subtotal = cart.items.values.fold(
+    final subtotal = cart.items.fold(
       0.0,
       (sum, item) => sum + (item.product.price * item.quantity),
     );
-    // Envío: gratis si subtotal >= 500.000, si no $5.000
     final shipping = (subtotal >= 500000) ? 0.0 : 5000.0;
     final total = subtotal + shipping;
 
@@ -193,7 +187,7 @@ class CartScreen extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(13), // Opacidad 0.05
+            color: Colors.black.withAlpha(13),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),
@@ -353,7 +347,17 @@ class CartItemTile extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.remove_circle_outline),
                         onPressed: () {
-                          context.read<CartProvider>().removeOne(product.id);
+                          final provider = context.read<CartProvider>();
+                          final currentQty = cartItem.quantity;
+                          // ✅ CORREGIDO: reducir cantidad o eliminar
+                          if (currentQty > 1) {
+                            provider.updateQuantity(
+                              product.id.toString(),
+                              currentQty - 1,
+                            );
+                          } else {
+                            provider.removeItem(product.id.toString());
+                          }
                         },
                         constraints: const BoxConstraints(),
                         padding: EdgeInsets.zero,
@@ -371,7 +375,8 @@ class CartItemTile extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.add_circle_outline),
                         onPressed: () {
-                          context.read<CartProvider>().addProduct(product);
+                          // ✅ CORREGIDO: añadir 1 unidad
+                          context.read<CartProvider>().addItem(product, 1);
                         },
                         constraints: const BoxConstraints(),
                         padding: EdgeInsets.zero,
@@ -382,7 +387,7 @@ class CartItemTile extends StatelessWidget {
                 ],
               ),
             ),
-            // Precio total del item (precio * cantidad)
+            // Precio total del item
             Text(
               '\$${(product.price * cartItem.quantity).toStringAsFixed(0)}',
               style: const TextStyle(

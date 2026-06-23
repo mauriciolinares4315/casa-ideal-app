@@ -1,6 +1,7 @@
 import 'package:casa_ideal_app/config/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart'; // 👈 Importar
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,19 +11,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Credenciales hardcodeadas para la demo
   static const String kDemoEmail = 'usuario@demo.com';
   static const String kDemoPassword = '123456';
 
   final _formKey = GlobalKey<FormState>();
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  // oculta contraseña
   bool _obscurePassword = true;
-
-  // cargando
   bool _isLoading = false;
 
   @override
@@ -32,34 +27,20 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  // login
   void _onLogin() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      _isLoading = true;
-    });
-
-    // Simulacion de loading
+    setState(() => _isLoading = true);
     await Future.delayed(const Duration(seconds: 1));
 
-    // Obtener credenciales
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
-
     final isValid = (email == kDemoEmail && password == kDemoPassword);
 
-    setState(() {
-      _isLoading = false;
-    });
+    setState(() => _isLoading = false);
 
     if (isValid) {
-      // home
-      if (mounted) {
-        context.go('/home');
-      }
+      if (mounted) context.go('/home');
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -86,31 +67,37 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Logo
                   const Icon(
                     Icons.home_work_outlined,
-                    size: 80,
+                    size: 90,
                     color: AppTheme.primaryColor,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Bienvenido a casaIdeal',
+
+                  // ⭐ Título con Nunito
+                  Text(
+                    'Bienvenido a Casa Ideal',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: GoogleFonts.nunito(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.primaryColor,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+
+                  // ⭐ Subtítulo con Nunito
+                  Text(
                     'Inicia sesión para continuar',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: GoogleFonts.nunito(
+                      fontSize: 16,
+                      color: Colors.grey[600],
+                    ),
                   ),
                   const SizedBox(height: 40),
 
-                  // correo
+                  // Correo (ya usa Nunito por el tema global)
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -120,18 +107,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty)
                         return 'Ingresa tu correo';
-                      }
-                      if (!value.contains('@')) {
-                        return 'Correo no válido';
-                      }
+                      if (!value.contains('@')) return 'Correo no válido';
                       return null;
                     },
                   ),
                   const SizedBox(height: 20),
 
-                  // contraseña
+                  // Contraseña (ya usa Nunito por el tema global)
                   TextFormField(
                     controller: _passwordController,
                     obscureText: _obscurePassword,
@@ -153,25 +137,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty)
                         return 'Ingresa tu contraseña';
-                      }
-                      if (value.length < 6) {
+                      if (value.length < 6)
                         return 'La contraseña debe tener al menos 6 caracteres';
-                      }
                       return null;
                     },
                   ),
                   const SizedBox(height: 30),
 
-                  //  inicio de sesión
+                  // ⭐ Botón (ya usa Nunito por el tema global, pero podemos asegurar)
                   ElevatedButton(
                     onPressed: _isLoading ? null : _onLogin,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      textStyle: const TextStyle(fontSize: 18),
+                      textStyle: GoogleFonts.nunito(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ), // ✅
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -187,13 +172,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           )
                         : const Text('Iniciar sesión'),
                   ),
-
                   const SizedBox(height: 20),
+
+                  // ⭐ "Olvidaste tu contraseña" con Nunito
                   TextButton(
                     onPressed: () {},
-                    child: const Text(
+                    child: Text(
                       '¿Olvidaste tu contraseña?',
-                      style: TextStyle(color: AppTheme.primaryColor),
+                      style: GoogleFonts.nunito(
+                        color: AppTheme.primaryColor,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30), // Espacio extra
+                  Text(
+                    'Desarrollado por Mauricio Linares DEV',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.nunito(
+                      fontSize: 12,
+                      color: Colors.grey[500],
+                      fontWeight: FontWeight.w300,
                     ),
                   ),
                 ],

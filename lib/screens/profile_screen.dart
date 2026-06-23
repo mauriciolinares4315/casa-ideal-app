@@ -65,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             onTap: () {
               context.read<CartProvider>().clear();
-              context.go('/login');
+              context.go('/');
             },
           ),
         ],

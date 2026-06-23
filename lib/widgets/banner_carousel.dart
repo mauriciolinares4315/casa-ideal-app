@@ -10,15 +10,15 @@ class BannerCarousel extends StatefulWidget {
 class _BannerCarouselState extends State<BannerCarousel> {
   // Controlador para el PageView
   final PageController _controller = PageController();
-  
+
   // Índice del banner actual
   int _current = 0;
 
   // Lista de URLs de los banners
   final List<String> _banners = const [
-    'https://picsum.photos/seed/banner1/800/300',
-    'https://picsum.photos/seed/banner2/800/300',
-    'https://picsum.photos/seed/banner3/800/300',
+    'https://images.pexels.com/photos/12277201/pexels-photo-12277201.jpeg',
+    'https://images.pexels.com/photos/12277021/pexels-photo-12277021.jpeg',
+    'https://images.pexels.com/photos/6480707/pexels-photo-6480707.jpeg',
   ];
 
   @override
@@ -44,6 +44,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
               child: Image.network(
                 _banners[i],
                 fit: BoxFit.cover,
+                alignment: Alignment.bottomCenter,
                 width: double.infinity,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(

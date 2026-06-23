@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_outlined),
+            onPressed: () => context.go('/home'),
+            tooltip: 'Ir al inicio',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -41,7 +49,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     product.imageUrl,
                     height: 300,
                     width: double.infinity,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
+                    alignment: Alignment.center,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
                         height: 300,
@@ -176,7 +185,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           context,
                           listen: false,
                         );
-                        cartProvider.addProduct(product,);
+                        cartProvider.addItem(product, _quantity);
 
                         // Mostrar feedback
                         ScaffoldMessenger.of(context).showSnackBar(
