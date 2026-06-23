@@ -1,3 +1,6 @@
+import 'package:provider/provider.dart';
+
+import '../providers/cart_provider.dart'; 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/product_card.dart';
@@ -19,10 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String _searchQuery = '';
   String _selectedCategory = 'Todos';
 
-  // Contador del carrito (demo)
-  final _cartCount = 0; // En una app real, vendría de un provider
-
-  // Getter que filtra productos por búsqueda y categoría
+   // Getter que filtra productos por búsqueda y categoría
   List<Product> get _filteredProducts {
     return kProducts.where((p) {
       final matchesSearch = p.name.toLowerCase().contains(
@@ -41,46 +41,53 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // ----------------------- APP BAR -----------------------
   PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      title: const Text('Casa Ideal'),
-      backgroundColor:AppTheme.primaryColor,
-      foregroundColor: Colors.white,
-      elevation: 0,
-      actions: [
-        // Ícono de perfil (nuevo)
+  return AppBar(
+    title: const Text('Casa Ideal'),
+    backgroundColor: AppTheme.primaryColor,
+    foregroundColor: Colors.white,
+    elevation: 0,
+    actions: [
+      // Ícono de perfil
       IconButton(
         icon: const Icon(Icons.person_outline),
         onPressed: () => context.go('/profile'),
       ),
-        // Icono del carrito con badge
-        Stack(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.shopping_cart_outlined),
-              onPressed: () => context.go('/cart'),
-            ),
-            if (_cartCount > 0)
-              Positioned(
-                right: 6,
-                top: 6,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    '$_cartCount',
-                    style: const TextStyle(color: Colors.white, fontSize: 10),
+      // (usando Consumer)
+      Consumer<CartProvider>(
+        builder: (context, cart, _) {
+          final totalItems = cart.totalItems; // Suma de todas las cantidades
+          return Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_cart_outlined),
+                onPressed: () => context.go('/cart'),
+              ),
+              if (totalItems > 0)
+                Positioned(
+                  right: 6,
+                  top: 6,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      '$totalItems',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-          ],
-        ),
-      ],
-    );
-  }
-
+            ],
+          );
+        },
+      ),
+    ],
+  );
+}
 
   // ----------------------- BODY PRINCIPAL -----------------------
 Widget _buildBody() {
@@ -101,7 +108,7 @@ Widget _buildBody() {
       }
     },
     child: SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(), // Obligatorio para RefreshIndicator
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

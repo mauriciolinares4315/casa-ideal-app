@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import 'package:provider/provider.dart';
@@ -101,17 +102,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Precio formateado
                   Text(
-                    '\$${product.price.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (m) => '${m[1]}.')}',
+                    '\$${product.price.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (m) => '${m[1]}.')} COP',
                     style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.primaryColor,
                     ),
                   ),
-                  const SizedBox(height: 8),
-
                   // Rating con estrellas
                   Row(
                     children: [
@@ -146,6 +144,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                   const SizedBox(height: 24),
 
+                  
                   // ------------------ SELECTOR DE CANTIDAD ------------------
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -160,7 +159,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                       Text(
                         '$_quantity',
-                        style: const TextStyle(
+                        style: GoogleFonts.nunito(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
@@ -180,14 +179,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Agregar al carrito usando el provider
                         final cartProvider = Provider.of<CartProvider>(
                           context,
                           listen: false,
                         );
                         cartProvider.addItem(product, _quantity);
-
-                        // Mostrar feedback
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Producto agregado al carrito'),
@@ -200,7 +196,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         backgroundColor: AppTheme.primaryColor,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        textStyle: const TextStyle(fontSize: 18),
+                        textStyle: GoogleFonts.nunito(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -209,9 +208,31 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ),
 
+                  // ⭐ BOTÓN "SEGUIR COMPRANDO"
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () => context.go('/home'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppTheme.primaryColor,
+                        side: const BorderSide(color: AppTheme.primaryColor),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        textStyle: GoogleFonts.nunito(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text('Seguir comprando'),
+                    ),
+                  ),
+
                   const SizedBox(height: 12),
 
-                  // ------------------ INFORMACIÓN ADICIONAL ------------------
+// ------------------ INFORMACIÓN ADICIONAL ------------------
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -230,7 +251,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-  // Widget auxiliar para los chips de información
+  // Widget auxiliar para los chips de información adicional
   Widget _buildInfoChip(IconData icon, String label) {
     return Chip(
       avatar: Icon(icon, size: 16, color: AppTheme.primaryColor),

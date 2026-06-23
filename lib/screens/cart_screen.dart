@@ -55,24 +55,31 @@ class CartScreen extends StatelessWidget {
 
   // ---------- APP BAR ----------
   AppBar _buildAppBar(BuildContext context) {
-    return AppBar(
-      title: const Text('Mi Carrito'),
-      backgroundColor: AppTheme.primaryColor,
-      foregroundColor: Colors.white,
-      elevation: 0,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.delete_outline),
-          onPressed: () {
-            final cart = context.read<CartProvider>();
-            if (cart.items.isNotEmpty) {
-              _showClearCartDialog(context, cart);
-            }
-          },
-        ),
-      ],
-    );
-  }
+  return AppBar(
+    title: const Text('Mi Carrito'),
+    backgroundColor: AppTheme.primaryColor,
+    foregroundColor: Colors.white,
+    elevation: 0,
+    actions: [
+      // ⭐ NUEVO: Botón para ir a la tienda
+      IconButton(
+        icon: const Icon(Icons.storefront_outlined),
+        onPressed: () => context.go('/home'),
+        tooltip: 'Seguir comprando',
+      ),
+      // Botón para vaciar carrito
+      IconButton(
+        icon: const Icon(Icons.delete_outline),
+        onPressed: () {
+          final cart = context.read<CartProvider>();
+          if (cart.items.isNotEmpty) {
+            _showClearCartDialog(context, cart);
+          }
+        },
+      ),
+    ],
+  );
+}
 
   // ---------- CARRITO VACÍO ----------
   Widget _buildEmptyCart(BuildContext context) {
@@ -202,21 +209,51 @@ class CartScreen extends StatelessWidget {
           const Divider(height: 24, thickness: 1),
           _buildPriceRow('TOTAL', total, isTotal: true),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () => _onCheckout(context, cart, total),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text(
-              'Finalizar compra',
-              style: TextStyle(fontSize: 18),
-            ),
+
+// ⭐ Dos botones: "Seguir comprando" y "Finalizar compra"
+Row(
+  children: [
+    // Botón "Seguir comprando"
+    Expanded(
+      child: OutlinedButton(
+        onPressed: () => context.go('/home'),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppTheme.primaryColor,
+          side: const BorderSide(color: AppTheme.primaryColor),
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        child: const Text('Seguir comprando'),
+      ),
+    ),
+    const SizedBox(width: 12),
+    // Botón "Finalizar compra"
+    Expanded(
+      child: ElevatedButton(
+        onPressed: () => _onCheckout(context, cart, total),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppTheme.primaryColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        child: const Text('Finalizar compra'),
+      ),
+    ),
+  ],
+),
         ],
       ),
     );
